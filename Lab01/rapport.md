@@ -4,6 +4,7 @@ Berberat Alex
 
 ## Partie 1 - Configurer un serveur Syslog
  >1. Montrez, avec une copie d’écran, les événements reçus par votre serveur Syslog
+ ![image_événements_reçus_serveur_syslog](2025-10-02_15-27-52.png)
 
 ## Partie 2 - Configurer un client Linux
 >2. Montrez votre fichier de configuration (les commandes importantes)
