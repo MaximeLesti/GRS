@@ -34,7 +34,6 @@ Messages utiles pour la gestion:
 - Log de service critique
 - Alertes de firewall
 
-????????????
 
 >5. Que pouvez-vous dire sur la sécurité des échanges de messages Syslog ?
 
