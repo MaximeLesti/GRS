@@ -11,7 +11,7 @@ Berberat Alex
 
 La ligne importante à ajouter dans le fichier de configuration est la suivante:
 ```
-*.* @ 192.168.26.11:514
+*.* @192.168.26.11:514
 ```
 Elle permet de rediriger les log de la machine linux vers la machine Windows 10, qui possède l'adresse ip statique 192.168.26.11, sur le port 514
 
@@ -37,10 +37,13 @@ Messages utiles pour la gestion:
 
 >5. Que pouvez-vous dire sur la sécurité des échanges de messages Syslog ?
 
-La sécurité des échanges de messages Syslog par UDP est très faible, pas du tout sécurisé même. Voici plusieurs vulnérabilité à prendre en compte:
-- falsification -> spoofing d'adresses IP
-- interception -> écoute réseau
-- pertes de paquets -> udp non fiable
+Les messages Syslog ne sont pas sécurisé (chiffrement, authentification). 
+Un attaquant pourrait: 
+- falsifier -> envoie de faux messages d'erreur
+- intercepter -> écoute réseau pour se renseigner sur l'architecture
+
+De plus UDP étant utilisé par défaut il pourrait aussi y avoir de la perte de paquet.
+
 
 >6. Présentez et expliquer la captures wireshark d’un message Syslog.
 
