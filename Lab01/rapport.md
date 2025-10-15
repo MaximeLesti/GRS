@@ -144,29 +144,186 @@ end
 write memory
 ```
 
-
 ---
 
 Configurez votre routeur Cisco de manière à récupérer un message contenant la commande
 utilisée, lors d’une modification de la configuration. Par hypothèse, les logs sont maintenant
 fixés au niveau Warning et plus Debug.
 >10. Montrer les commandes IOS que vous avez utilisé.
+```
+enable
+
+conf t 
+
+logging trap warnings
+
+archive
+
+log config
+
+logging enable
+
+notify syslog
+
+end
+
+write memory
+```
+
+```
+# Test 1
+enable
+conf t
+hostname Test_routeur
+```
+
+```
+# Test 2
+enable 
+conf t
+
+interface loopback 40
+description Test GRS Cisco
+ip address 40.40.40.1 255.255.255.0
+
+end
+```
+
+
 
 >11. Montrer le message reçu
 
 ## Partie 4 - Rediriger les événements Windows sur un serveur Syslog
+Sur le noeud Windows 10
+---
 
+A l’aide de la commande logger.exe, envoyez un message à votre serveur Syslog.
 >12. Montrez la commande et le message reçu sur le serveur Syslog
+```
+logger.exe -n 192.168.26.11 -a 514 "Test logger LabGRS"
+```
+
+[Message à mettre]()
+
+---
+Générez un message Syslog à l’aide de la cmdlet Send-SyslogMessage (module PoshSYSLOG) en mode RFC 3164 et 5424 et comparez les messages
 
 >13. Montrez la commande utilisée et les messages reçus par le serveur Syslog
+```
+#Pour RFC 3164
+Send-SyslogMessage -Server 192.168.26.11 -Port 514 -Message "Message Test RFC3164 GRS" -Facility syslog -Severity Informational -RFC3164
+
+#
+Send-SyslogMessage -Server 192.168.26.11 -Port 514 -Message "Message test RFC5424 GRS" -Facility syslog -Severity Informational -RFC5424
+
+#au cas où le second ne marche pas tenter:
+#Send-SyslogMessage -Server 192.168.26.11 -Port 514 -Message "Message test RFC5424 GRS" -Facility syslog -Severity Informational 
+
+```
+[IMage]()
+
+
+A titre indicatif pour aider à l'analyse:
+![alt text](image.png)
+---
+
+Créez un script PowerShell qui vérifie toutes les 2 minutes la présence d’un processus p (par
+exemple cmd.exe) et qui génère un message Syslog en cas d’absence.
 
 >14. Montrez le contenu du script et le message reçu par le serveur Syslog
+```
+$ProcessName = "cmd"                   
+$SyslogServer = "192.168.26.11"         
+$SyslogPort   = 514   
+$Facility     = "syslog"                
+$Severity     = "Informational"                                                 
+$Interval     = 120                     
+
+
+Write-Host "Démarrage de la surveillance du processus $ProcessName..."
+Write-Host "Vérification toutes les $Interval secondes."
+
+while ($true) {
+    # Vérifier la présence du processus
+    $Process = Get-Process -Name $ProcessName -ErrorAction SilentlyContinue
+
+    if (-not $Process) {
+        # Si le processus est absent, envoyer un message Syslog
+        $Message = "ALERTE : Le processus $ProcessName est absent"
+        Write-Host $Message 
+
+        # Envoi au serveur Syslog
+        Send-SyslogMessage -Server $SyslogServer -Port $SyslogPort -Facility $Facility -Severity $Severity -Message $Message 
+    }
+
+    # Attente avant la prochaine vérification
+    Start-Sleep -Seconds $Interval
+}
+
+```
+```
+#Pour exécuter le script dans Windows
+Set-ExecutionPolicy RemoteSigned  #Commande PowerShell
+
+#lancer le script
+C:\Scripts\Check-Process-Syslog.ps1
+
+```
+[Image]()
+
+
+
+---
+
+A l’aide de https://www.solarwinds.com/free-tools/event-log-forwarder-for-windows ou le
+cmdlet Send_syslogMessage:\
+Redirigez, vers le serveur Syslog, l’événement Windows (Observateur d’événements) liés à
+un échec de login local.
 
 >15. Montrez le bon fonctionnement de la redirection à l’aide d’une copie d’écran du
 serveur Syslog
 
+1) Installe le module:
+```
+Install-Module -Name Posh-SYSLOG
+Import-Module Posh-SYSLOG
+```
+2) Dans le journal des événements de Windows 10, on trouve que les échecs de connexion sont d'ID 4625
+-> dans Journaux Windows -> Sécurité : faire un clic droit sur l'ID de l'événement 4625 et cliquer sur **Joindre une tâche à cet événement...**
+-> dans la section **Action** de l'assistant, choisir **Démarrer un programme**
+3) Ajouter le chemin de l'exécutable PowerShell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+4) Puis ajouter l'argument qui permet de choisir le script: -File "C:\Users\labo\Desktop\script2.ps1"
+5) Créer le script à l'endroit choisi précédement: C:\Users\labo\Desktop\script2.ps1
+   ```
+    Sens-SyslogMessage -Message "Erreur de login local - Test GRS" -Server "192.168.26.11" -Port 514 -Severity Informational -Facilits syslog
+   ```
+6) Test en verrouillant la session windows et en se trompant de mot de passe
+   
+ [Image]()  
 ## Partie 5 - Utilisation de Sysmon
+Sur le noeud Windows 10
+---
 
+Installez l’extension sysmon (Microsoft Sysinternals) et configurez-le, via un fichier XML, de
+manière que les connexions vers le port 80 et les requêtes DNS sur le site lematin.ch
+soient journalisée et visible dans l’Observateur d’événements.
 >16. Montrez le contenu de votre fichier XML.
+```
+<Sysmon schemaversion="4.82"> <!-- Si ça marche pas, essayer la version 4.30 -->
+    <EventFiltering>
+
+    <NetworkConnect onmatch="include">
+        <DestinationPort>80</DestinationPort>
+    </NetworkConnect>
+
+    <DnsQuery onmatch="include">
+      <QueryName>lematin.ch</QueryName> <!-- ou <QueryName condition="contain">lematin.ch</QueryName> -->
+    </DnsQuery>
+    </EventFiltering>
+</Sysmon>
+
+```
 
 >17. Montrez le message reçu.
+
+[Image]() -> Aller dans **Journaux des applications et des services** -> **Microsoft** -> **Windows** -> **Sysmon** -> **Operational**
