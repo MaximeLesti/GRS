@@ -44,6 +44,9 @@ Un attaquant pourrait:
 
 De plus UDP étant utilisé par défaut il pourrait aussi y avoir de la perte de paquet.
 
+---
+Pas celle là
+---
 
 >6. Présentez et expliquer la captures wireshark d’un message Syslog.
 
@@ -60,7 +63,7 @@ On peut donc remarquer qu'un message wireshark contient plusieurs champs nous in
 Liste des Facilities standards Syslog:
 |Facility||
 |:------:|:--|
-|kern|messages su noyau Linux|
+|kern|messages du noyau Linux|
 |user|messages générés par les utilisateurs/applications|
 |mail|système de messagerie|
 |daemon|processus en arrère-plan(services système)|
@@ -91,10 +94,33 @@ En prenant le message que nous avons envoyé précédemment depuis le noeud Linu
 - Il a été envoyé le 3 ocotobre à 15h26min27sec.
 - L'adresse ip l'ayant envoyé est la 192.168.26.12 (soit notre noeud linux).
 - Le host l'ayant envoyé est `grs-srv, soit encore notre noeud linux.
-- La facility est `user`, c'est donc un message généré par l'utilisateur ou une application (première option ici).
+- La facility est `user`, c'est donc u message généré r l'utilisateur ou un application (première option ici).
 - La priority est notice, soit d'ordre 5: l'information est importante mais n'est pas une erreur.
 - Le tag est `grs`.
 - Le message contient `Hello GRS`.
+
+---
+Celle là
+---
+![alt text](image-1.png)
+
+On retrouve:
+ - La source IP : 192.168.26.12 (celui qui envoie)
+ - Le port source: 37362
+ - La destination IP: 192.168.26.11 (celui qui reçoit)
+ - Le port destination: 514
+ - Le protocole: Syslog
+ - La longueur : 80
+ - Le message Syslog: "USER.NOTICE: Oct 15 21:14:12 grs-srv grs:hello"
+  
+Dans le message, on retrouve:
+- La facility: USER.NOTICE
+- Le Header: "Oct 5 21:14:12 grs-srv", qui indique la date ainsi que le nom de l'hôte émetteur
+- le Message: "grs: hello", qui est le contenu du message
+
+
+
+---
 
 >7. Modifiez votre configuration afin que les messages Syslog générés par la commande
 `sudo` (et exclusivement ceux-ci) soient stockés dans le fichier local
@@ -192,6 +218,8 @@ end
 
 
 >11. Montrer le message reçu
+
+[images]()
 
 ## Partie 4 - Rediriger les événements Windows sur un serveur Syslog
 Sur le noeud Windows 10
