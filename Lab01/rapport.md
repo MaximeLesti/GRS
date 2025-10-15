@@ -110,11 +110,43 @@ avant la ligne de redirection ajoutée précédemment:
 *.* @192.168.26.11:514
 ```
 ## Partie 3 - Configurer Syslog sur un équipement réseau
-
+**Sur le noeud Cisco**
+---
+Configurez votre routeur de manière à récupérer les messages de niveau Debug, en tant
+que Local_3, sur votre serveur Syslog. 
 >8. Montrer les commandes IOS que vous avez utilisé.
 
->9. Montrer les commandes IOS que vous avez utilisé.
+```
+enable
+conf t
+logging on
+logging host 192.168.26.11 #adresse du serveur syslog de windows
+logging facility local3
+logging trap debugging
+end
+write memory
+```
+---
 
+Configurer votre routeur afin qu’il soit possible d’assurer une corrélation précise (précision
+à la milliseconde) des événements reçus par le serveur Syslog, en utilisant le protocole
+NTP.
+>9. Montrer les commandes IOS que vous avez utilisé.
+```
+enable 
+conf t
+ntp server 192.168.26.11
+service timestamps log datetime msec
+end
+write memory
+```
+
+
+---
+
+Configurez votre routeur Cisco de manière à récupérer un message contenant la commande
+utilisée, lors d’une modification de la configuration. Par hypothèse, les logs sont maintenant
+fixés au niveau Warning et plus Debug.
 >10. Montrer les commandes IOS que vous avez utilisé.
 
 >11. Montrer le message reçu
