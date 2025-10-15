@@ -3,10 +3,23 @@ Berberat Alex
 # GRS - Lab01 - Rapport
 
 ## Partie 1 - Configurer un serveur Syslog
+Sur le noeud PC Windows 10
+---
+Démarrez le serveur Visual Syslog Server.
+
+Lancez SyslogGenerator. A l’aide de cet outil vous pouvez tester que votre serveur
+Syslog reçoit bien les messages générés localement. Faites quelques tests avec différents
+types de message et notamment un message contenant votre nom.
  >1. Montrez, avec une copie d’écran, les événements reçus par votre serveur Syslog
  ![image_événements_reçus_serveur_syslog](2025-10-02_15-48-37.png)
 
 ## Partie 2 - Configurer un client Linux
+Sur le noeud Linux
+---
+
+Configurer Syslog (rsyslog), en modifiant le fichier de configuration qui se trouve dans le
+répertoire /etc/rsyslog.conf/ pour qu’il redirige les logs sur le serveur situé sur le PC
+Windows 10 (Port UDP 514).
 >2. Montrez votre fichier de configuration (les commandes importantes)
 
 La ligne importante à ajouter dans le fichier de configuration est la suivante:
@@ -15,6 +28,10 @@ La ligne importante à ajouter dans le fichier de configuration est la suivante:
 ```
 Elle permet de rediriger les log de la machine linux vers la machine Windows 10, qui possède l'adresse ip statique 192.168.26.11, sur le port 514
 
+---
+
+Générez des messages depuis la VM Linux (reboot, sudo et en utilisant la commande
+logger) et capturez simultanément le trafic Syslog à l’aide de Wireshark.
 >3. Montrez les messages reçus sur la console du serveur Syslog distant (Windows
 10).
 
@@ -23,6 +40,8 @@ Log envoyé depuis la machine Linux:
 
 Log reçu sur Windows 10:
 ![log reçu sur Windows](2025-10-03_17-26-55.png)
+
+
 
 >4. Donnez plusieurs exemples de messages qui vous semblent utiles dans la gestion
 des réseaux.
@@ -45,7 +64,7 @@ Un attaquant pourrait:
 De plus UDP étant utilisé par défaut il pourrait aussi y avoir de la perte de paquet.
 
 ---
-Pas celle là
+6. Pas celle là - FYI
 ---
 
 >6. Présentez et expliquer la captures wireshark d’un message Syslog.
@@ -100,7 +119,7 @@ En prenant le message que nous avons envoyé précédemment depuis le noeud Linu
 - Le message contient `Hello GRS`.
 
 ---
-Celle là
+6. Celle là
 ---
 ![alt text](image-1.png)
 
