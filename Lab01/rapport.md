@@ -302,7 +302,10 @@ Import-Module Posh-SYSLOG
    ```
 6) Test en verrouillant la session windows et en se trompant de mot de passe
    
- [Image]()  
+ [Image](img_q15.png)  
+
+
+
 ## Partie 5 - Utilisation de Sysmon
 Sur le noeud Windows 10
 ---
