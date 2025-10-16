@@ -191,54 +191,27 @@ write memory
 
 ---
 
-Configurez votre routeur Cisco de manière à récupérer un message contenant la commande
-utilisée, lors d’une modification de la configuration. Par hypothèse, les logs sont maintenant
-fixés au niveau Warning et plus Debug.
+Configurez votre routeur Cisco de manière à récupérer un message contenant la commande utilisée, lors d’une modification de la configuration. Par hypothèse, les logs sont maintenant fixés au niveau Warning et plus Debug.
 >10. Montrer les commandes IOS que vous avez utilisé.
 ```
 enable
-
 conf t 
-
 logging trap warnings
-
 archive
-
 log config
-
 logging enable
-
 notify syslog
-
 end
-
 write memory
 ```
-
-```
-# Test 1
-enable
-conf t
-hostname Test_routeur
-```
-
-```
-# Test 2
-enable 
-conf t
-
-interface loopback 40
-description Test GRS Cisco
-ip address 40.40.40.1 255.255.255.0
-
-end
-```
-
 
 
 >11. Montrer le message reçu
 
-[images]()
+Juste après avoir activer le logging ce message a été reçu.
+
+[images](img_q11.png)
+
 
 ## Partie 4 - Rediriger les événements Windows sur un serveur Syslog
 Sur le noeud Windows 10
@@ -247,67 +220,50 @@ Sur le noeud Windows 10
 A l’aide de la commande logger.exe, envoyez un message à votre serveur Syslog.
 >12. Montrez la commande et le message reçu sur le serveur Syslog
 ```
-logger.exe -n 192.168.26.11 -a 514 "Test logger LabGRS"
+logger.exe -l 192.168.45.12 -a 514 "Test logger"
 ```
 
-[Message à mettre]()
+[Message à mettre](img_q12.png)
 
 ---
 Générez un message Syslog à l’aide de la cmdlet Send-SyslogMessage (module PoshSYSLOG) en mode RFC 3164 et 5424 et comparez les messages
 
 >13. Montrez la commande utilisée et les messages reçus par le serveur Syslog
 ```
-#Pour RFC 3164
-Send-SyslogMessage -Server 192.168.26.11 -Port 514 -Message "Message Test RFC3164 GRS" -Facility syslog -Severity Informational -RFC3164
+# Pour RFC 5424 (par défaut)
+Send-SyslogMessage -Server 192.168.45.12 -Message "Test rfc" -Facility syslog -Severity Informational
 
-#
-Send-SyslogMessage -Server 192.168.26.11 -Port 514 -Message "Message test RFC5424 GRS" -Facility syslog -Severity Informational -RFC5424
-
-#au cas où le second ne marche pas tenter:
-#Send-SyslogMessage -Server 192.168.26.11 -Port 514 -Message "Message test RFC5424 GRS" -Facility syslog -Severity Informational 
-
+# Pour RFC 3164
+Send-SyslogMessage -Server 192.168.45.12 -Message "Test rfc" -Facility syslog -Severity Informational -RFC3164
 ```
-[IMage]()
+Logs reçus:  
+[IMage](img_q13.png)
 
 
-A titre indicatif pour aider à l'analyse:
-![alt text](image.png)
+
 ---
 
 Créez un script PowerShell qui vérifie toutes les 2 minutes la présence d’un processus p (par
 exemple cmd.exe) et qui génère un message Syslog en cas d’absence.
 
 >14. Montrez le contenu du script et le message reçu par le serveur Syslog
-```
-$ProcessName = "cmd"                   
-$SyslogServer = "192.168.26.11"         
-$SyslogPort   = 514   
-$Facility     = "syslog"                
-$Severity     = "Informational"                                                 
-$Interval     = 120                     
-
-
-Write-Host "Démarrage de la surveillance du processus $ProcessName..."
-Write-Host "Vérification toutes les $Interval secondes."
+```powershell
+$SyslogServer = "192.168.45.12"
+$ProcessName = "cmd"
+$msg = "cmd.exe not running"
+$interval = 120
 
 while ($true) {
-    # Vérifier la présence du processus
-    $Process = Get-Process -Name $ProcessName -ErrorAction SilentlyContinue
-
-    if (-not $Process) {
-        # Si le processus est absent, envoyer un message Syslog
-        $Message = "ALERTE : Le processus $ProcessName est absent"
-        Write-Host $Message 
-
-        # Envoi au serveur Syslog
-        Send-SyslogMessage -Server $SyslogServer -Port $SyslogPort -Facility $Facility -Severity $Severity -Message $Message 
+    # check if cmd.exe is not running
+    if(-not (Get-Process -Name $ProcessName -ErrorAction SilentlyContinue)) {
+        #if not running, send syslog
+        Send-SyslogMessage -Server $SyslogServer -Facility syslog -Severity Error -Message $msg
     }
-
-    # Attente avant la prochaine vérification
-    Start-Sleep -Seconds $Interval
+    # sleep for specified interval
+    Start-Sleep -Seconds $interval
 }
-
 ```
+
 ```
 #Pour exécuter le script dans Windows
 Set-ExecutionPolicy RemoteSigned  #Commande PowerShell
@@ -316,7 +272,7 @@ Set-ExecutionPolicy RemoteSigned  #Commande PowerShell
 C:\Scripts\Check-Process-Syslog.ps1
 
 ```
-[Image]()
+[Image](img_q14.png)
 
 
 
