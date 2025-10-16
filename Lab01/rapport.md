@@ -315,16 +315,14 @@ manière que les connexions vers le port 80 et les requêtes DNS sur le site lem
 soient journalisée et visible dans l’Observateur d’événements.
 >16. Montrez le contenu de votre fichier XML.
 ```
-<Sysmon schemaversion="4.82"> <!-- Si ça marche pas, essayer la version 4.30 -->
+<Sysmon schemaversion="4.82">
     <EventFiltering>
-
-    <NetworkConnect onmatch="include">
-        <DestinationPort>80</DestinationPort>
-    </NetworkConnect>
-
-    <DnsQuery onmatch="include">
-      <QueryName>lematin.ch</QueryName> <!-- ou <QueryName condition="contain">lematin.ch</QueryName> -->
-    </DnsQuery>
+        <NetworkConnect onmatch="include">
+            <DestinationPort>80</DestinationPort>
+        </NetworkConnect>
+        <DnsQuery onmatch="include">
+            <QueryName condition="contains">lematin.ch</QueryName>
+        </DnsQuery>
     </EventFiltering>
 </Sysmon>
 
