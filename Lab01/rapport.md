@@ -314,14 +314,14 @@ Installez l’extension sysmon (Microsoft Sysinternals) et configurez-le, via un
 manière que les connexions vers le port 80 et les requêtes DNS sur le site lematin.ch
 soient journalisée et visible dans l’Observateur d’événements.
 >16. Montrez le contenu de votre fichier XML.
-```
+```xml
 <Sysmon schemaversion="4.82">
     <EventFiltering>
         <NetworkConnect onmatch="include">
             <DestinationPort>80</DestinationPort>
         </NetworkConnect>
         <DnsQuery onmatch="include">
-            <QueryName condition="contains">lematin.ch</QueryName>
+            <QueryName condition="end with">lematin.ch</QueryName>
         </DnsQuery>
     </EventFiltering>
 </Sysmon>
