@@ -330,4 +330,6 @@ soient journalisée et visible dans l’Observateur d’événements.
 
 >17. Montrez le message reçu.
 
-[Image](img_q17.png) -> Aller dans **Journaux des applications et des services** -> **Microsoft** -> **Windows** -> **Sysmon** -> **Operational**
+[Image](img_q17.png) 
+[Image](img_q17_2.png)
+-> Aller dans **Journaux des applications et des services** -> **Microsoft** -> **Windows** -> **Sysmon** -> **Operational**
