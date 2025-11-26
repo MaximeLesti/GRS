@@ -382,12 +382,30 @@ La version 3 de SNMP ajoute des capacités de chiffrement et d’authentificatio
 
 > [!tip] 
 > #### Steps:
-> 
+> lire la réponse (et ajouter un screen de `show run`) pas sur si utile le screen
+
+> [!warning] 
+> remplacer `<ip windows>` par la vrai ip dans la réponse si dessous
+
+
 
 
 #### **Réponse:**
 
+Il faut commencer par supprimé la config SNMP v2:
+```sh
+# Del SNMP v2 config:
+no snmp-server community ciscoRO RO 10
+no snmp-server community ciscoRW RW 10
+```
 
+Ensuite, configurer SNMP v3:
+```sh
+# Config SNMP v3
+snmp-server group SECURE-GROUP v3 priv
+snmp-server user secureuser SECURE-GROUP v3 auth sha pass1 priv aes 128 pass2
+snmp-server host <ip windows> version 3 priv secureuser
+```
 
 
 
@@ -399,7 +417,16 @@ La version 3 de SNMP ajoute des capacités de chiffrement et d’authentificatio
 
 > [!tip] 
 > #### Steps:
-> 
+> Faire un screen pour chaque step ou mettre une explication complete
+> 1. dans SNMPb ouvrir `USM Profiles` et mettre les credentials 
+>       - Secu User Name: `secureuser`
+>       - Auth protocol: `SHA`
+>       - Auth pass: `pass1`
+>       - Privacy Protcol: `AES 128`
+>       - Privacy pass: `pass2`
+> 2. dans `Agent Profiles` pour `routeur_cisco_maxim` s'assurer que c'est `SNMPV3`
+> 3. dans `Agent Profiles` pour `routeur_cisco_maxim/SnmpV3` mettre secu lvl a `authPriv` 
+> 4. faire la requête sur `SysUpTime`
 
 
 #### **Réponse:**
