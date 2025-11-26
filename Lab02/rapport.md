@@ -160,10 +160,16 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 
 > 7. Montrez et analysez l’échange de messages capturés par Wireshark.
 
+#### **Réponse:**
 ![alt text](image-25.png)
 
-s
-#### **Réponse:**
+On remarque que les demandes de paquets sont des `get-next-request`, le routeur répond avec des `get-response`. Lors du changement de nom du routeur depuis l'application SNMPb, Windows envoie un `set-request` et le routeur répond par une `get-response`basique. 
+
+>[!warning]
+>TO COMPLETE
+
+
+
 
 
 
@@ -190,9 +196,10 @@ s
 > 8. Montrez les messages (traps) reçus par l’application SNMPb.
 
 #### **Réponse:**
+![alt text](image-26.png)
 
-
-
+>[!warning]
+> Faire analyse
 
 ---
 
@@ -203,9 +210,10 @@ s
 
 #### **Réponse:**
 
+![alt text](image-27.png)
 
-
-
+>[!warning]
+> Faire analyse
 
 ---
 
@@ -231,7 +239,7 @@ s
 
 #### **Réponse:**
 
-
+![alt text](image-28.png)
 
 
 ---
@@ -251,15 +259,13 @@ s
 
 > 11. Montrez le(s) fichier(s) de configuration nécessaire à la configuration de SNMP sur votre nœud Linux (même community string que pour Windows.).
 
+#### **Réponse:**
+
+![alt text](image-29.png)
 
 > [!tip] 
 > #### Steps:
 > screenshot `/etc/snmp/snmpd.conf`
-
-
-#### **Réponse:**
-
-
 
 
 ---
@@ -275,6 +281,7 @@ fonctionnement de votre nœud Linux.
 
 #### **Réponse:**
 
+![alt text](image-30.png)
 
 
 
@@ -297,9 +304,21 @@ fonctionnement de votre nœud Linux.
 > SnmpGet.exe -v:2c -c:"ciscoRO" <ip Cisco> 1.3.6.1.2.1.1.5.0
 > ```
 
+```{bash}
+#CUISINELLA
+$SNMP = New-Object -comObject olePrn.OleSNMP
+$SNMP.open('192.168.26.13',ciscoRO',2,1000)
+$Result = $SNMP.get('.1.3.6.1.2.1.1.5.0')
+$SNMP.Close()
+Write-Output "Device name: $Result"
+```
 
 #### **Réponse:**
 
+```{bash}
+$SNMP = New-Object -ComObject olePrn.OleSNMP
+Write-Output "Device name: $($SNMP.open('192.168.26.13','ciscoRO',2,1000) | Out-Null; $SNMP.get('.1.3.6.1.2.1.1.5.0')); $SNMP.Close()"
+```
 
 ---
 
