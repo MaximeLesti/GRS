@@ -240,7 +240,11 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 
 > [!tip] 
 > #### Steps:
-> 
+> 1. installer SNMPd
+> 2. éditer `/etc/snmp/snmpd.conf`
+> 3. ajouter addr ip de l'interface dans `agentaddress` comme `agentaddress udp:161`
+> 4. ajouter une `rocommunity` comme `rocommunity heig <addr win> -V systemonly`
+> 5. restart `sudo systemctl restart snmpd`
 
 
 > 11. Montrez le(s) fichier(s) de configuration nécessaire à la configuration de SNMP sur votre nœud Linux (même community string que pour Windows.).
@@ -248,7 +252,7 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 
 > [!tip] 
 > #### Steps:
-> 
+> screenshot `/etc/snmp/snmpd.conf`
 
 
 #### **Réponse:**
@@ -264,7 +268,7 @@ fonctionnement de votre nœud Linux.
 
 > [!tip] 
 > #### Steps:
-> 
+> trouver dans SNMPb `sysUpTime` normalement dans `internet/mgmt/mib-2/system/` et mettre screnshot
 
 
 #### **Réponse:**
@@ -283,7 +287,13 @@ fonctionnement de votre nœud Linux.
 
 > [!tip] 
 > #### Steps:
+> ```sh
+> # Install
+> Install-Module -Name SNMP
 > 
+> # Get cmd
+> SnmpGet.exe -v:2c -c:"ciscoRO" <ip Cisco> 1.3.6.1.2.1.1.5.0
+> ```
 
 
 #### **Réponse:**
@@ -297,15 +307,29 @@ fonctionnement de votre nœud Linux.
 
 
 
-> [!tip] 
-> #### Steps:
-> 
+> [!warning] 
+> vérifier  
+> pas sur si correcte 
 
 
 #### **Réponse:**
 
+```PowerShell
+while ($true) {
+    Get-SNMPData -IPAddress localhost -Community heig -Walk -OID "1.3.6.1.2.1.25.4.2.1.2"
+    Start-Sleep -Seconds 60
+}
+```
+ou 
+```PowerShell
+while ($true) {
+    Write-Output "=== $(Get-Date) ===" >> snmp_processes.log
+    
 
 
+    Start-Sleep -Seconds 60
+}
+```
 
 
 
