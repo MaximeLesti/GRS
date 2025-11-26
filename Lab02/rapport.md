@@ -160,7 +160,9 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 
 > 7. Montrez et analysez l’échange de messages capturés par Wireshark.
 
+![alt text](image-25.png)
 
+s
 #### **Réponse:**
 
 
