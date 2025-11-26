@@ -341,14 +341,14 @@ while ($true) {
     Start-Sleep -Seconds 60
 }
 ```
-ou 
+<!--ou 
 ```PowerShell
 while ($true) {
     Write-Output "=== $(Get-Date) ===" >> snmp_processes.log
     snmpwalk.exe -v2c -c public localhost 1.3.6.1.2.1.25.4.2.1.2 >> snmp_processes.log
     Start-Sleep -Seconds 60
 }
-```
+```-->
 
 
 
@@ -367,16 +367,14 @@ avez déterminé ce choix.
 
 |Fichiers MIBs| Raisons|
 |--|--|
-|`CISCO-FLASH-MIB`|Car ça nous permet d'avoir les informations de la mémoire flash|
-|`CISCO-SMI`| Car c'est une dépendance de CISCO-FLASH-MIB|
-
+|`CISCO-FLASH-MIB`|Cela nous permet d'avoir les informations de la mémoire flash|
+|`CISCO-SMI`| C'est une dépendance de CISCO-FLASH-MIB|
 
 
 
 ---
 
-> 16. Montrez, via une requête SNMPb, le nom des 10 premiers fichiers stockés sur la
-mémoire flash de votre routeur Cisco.
+> 16. Montrez, via une requête SNMPb, le nom des 10 premiers fichiers stockés sur la mémoire flash de votre routeur Cisco.
 
 
 > [!tip] 
@@ -386,9 +384,9 @@ mémoire flash de votre routeur Cisco.
 
 #### **Réponse:**
 
-
-
-
+![alt text](image-31.png)
+Les 10 premiers fichiers sont donc:
+![alt text](image-32.png)
 
 
 
@@ -423,8 +421,11 @@ Ensuite, configurer SNMP v3:
 # Config SNMP v3
 snmp-server group SECURE-GROUP v3 priv
 snmp-server user secureuser SECURE-GROUP v3 auth sha pass1 priv aes 128 pass2
-snmp-server host <ip windows> version 3 priv secureuser
+snmp-server host 192.168.26.11 version 3 priv secureuser
 ```
+
+-> snpm-server host 192.168.26.11 version 3 priv secureuser
+snmp-server group SECURE-GROUP v3 priv
 
 
 
