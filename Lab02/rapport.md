@@ -512,7 +512,7 @@ Windows ainsi que le SID de votre utilisateur local.
 
 > [!tip] 
 > #### Steps:
-> ouvrir l'app apparemment déjà installé et chercher `Win32_Processor` et `Win32_UserAccount`
+> ouvrir l'app apparemment déjà installé et chercher les classes `Win32_Processor` et `Win32_UserAccount` pour user account choisir l'instance avec `Name="GRS"`
 
 
 #### **Réponse:**
@@ -534,12 +534,33 @@ En cas d’espace insuffisant, une alarme Syslog est générée et récupérée 
 
 > [!tip] 
 > #### Steps:
-> 
+> tester si ça marche  
+> possiblement besoin de Posh-SYSLOG  
 
 
 #### **Réponse:**
 
+```PowerShell
+$threshold = 25
+$partitions = Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType=3"
 
+foreach ($partition in $partitions) {
+    $freePct = [math]::Round(($disk.FreeSpace / $disk.Size) * 100, 2)
+
+    Write-Host "Drive: $($disk.DeviceID)  $($freePct)% Free `n`r    Free:  $($disk.FreeSpace) `n`r    Total: $($disk.Size)"
+
+    if ($freePct -lt $threshold) {
+        $msg = @{
+            Server = "127.0.0.1"
+            Port = 514
+            Facility = 16
+            Severity = 4
+            Message = "Low free space on drive $($disk.DeviceID)  $freePct % left."
+        }
+        Send-SyslogMessage @msg
+    }
+}
+```
 
 
 
@@ -552,7 +573,8 @@ En cas d’espace insuffisant, une alarme Syslog est générée et récupérée 
 
 > [!tip] 
 > #### Steps:
-> 
+> screenshot l'output du script  
+> si trop d'espace libre changer le threshold pour générer le syslog
 
 
 #### **Réponse:**
@@ -574,15 +596,20 @@ inséré dans votre système. Une notification est visible dans l’observateur 
 
 > [!tip] 
 > #### Steps:
-> 
+> tester si ça marche
 
 
 #### **Réponse:**
 
+```PowerShell
+# WMI USB Insert logger
+New-EventLog -LogName "USBInsertEvent" -Source "USBLogger"
 
-
-
-
+$query = "SELECT * FROM Win32_VolumeChangeEvent WHERE EventType=2"
+Register-WmiEvent -Query $query -Action {
+    Write-EventLog -LogName "USBInsertEvent" -Source "USBLogger" -EventId 1 -Message "USB inserted: $($Event.SourceEventArgs.NewEvent.DriveName)"
+}
+```
 
 
 ---
@@ -592,7 +619,7 @@ inséré dans votre système. Une notification est visible dans l’observateur 
 
 > [!tip] 
 > #### Steps:
-> 
+> screenshot l'event dans l'event logger de windows
 
 
 #### **Réponse:**
