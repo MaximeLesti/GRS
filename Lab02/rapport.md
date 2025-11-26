@@ -149,16 +149,22 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 ---
 ---
 
-- Changez le nom (hostname) du routeur à l’aide de l’application SNMPb (nouveau nom : router-<votre-nom>) tout en capturant avec Wireshark les messages échangés.
+- Changez le nom (hostname) du routeur à l’aide de l’application SNMPb (nouveau nom : `router-<votre-nom>`) tout en capturant avec Wireshark les messages échangés.
+
+> [!tip] 
+> #### Steps:
+> 1. Depuis SNMPb faire `Set sysName` avec `router-<votre-nom>`
+> 2. Avec Wireshark capturer `SNMP set-request` et `SNMP get-response`
+> 3. Add explication 
 
 
 > 7. Montrez et analysez l’échange de messages capturés par Wireshark.
 
 
-> [!tip] Steps
-> 
-
 #### **Réponse:**
+
+
+
 
 
 ---
@@ -167,9 +173,23 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 - Générez une trap SNMP en déclenchant un événement sur votre routeur (un peu d’imagination...) tout en capturant avec Wireshark les messages échangés.
 
 
+> [!tip] 
+> #### Steps:
+> 1. Sur le routeur: la cmd `test snmp trap ?` permet lister les tests qui existe
+> 2. En choisir un exemple: `test snmp trap entity`
+> 3. Faire capture avec Wireshark (UDP 162, snmpv2-trap)
+> - Pour 8.
+>   1. Dans SNMPb aller dans Traps et trouver celle qui vient d'être intercepté
+> - Pour 9.
+>   1. Mettre capture écran WS
+>   2. Ajouter explication avec lien donné
+
+
 > 8. Montrez les messages (traps) reçus par l’application SNMPb.
 
 #### **Réponse:**
+
+
 
 
 ---
@@ -181,11 +201,34 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 
 #### **Réponse:**
 
+
+
+
+
 ---
 
 > 10. Montrez la configuration de votre routeur afin qu’il n’accepte des requêtes SNMP que de la part de votre machine Windows uniquement.
 
+> [!tip] 
+> #### Steps:
+> (Faudra sûrement mettre dans la résponse les cmd suivantes)
+> 1. Config des `acces-list`
+>    ```
+>    conf t
+>    access-list 10 permit <ip du windows>
+>    access-list 10 deny any
+>    snmp-server community ciscoRO RO 10
+>    snmp-server community ciscoRW RW 10
+>    exit
+>    copy run start
+>    ```
+> 2. Vérifier  
+>    `show access-lists`   
+>    `show snmp`  
+>    j'ai aussi trouvé ces cmd mais je sais pas trop la quelle est meilleur (j'aurais envie de dire la 1ère)
+
 #### **Réponse:**
+
 
 
 
@@ -194,7 +237,19 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 
 - Afin d’intégrer votre nœud linux à votre environnement de gestion, activez et configurez SNMP sur votre nœud Linux.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 > 11. Montrez le(s) fichier(s) de configuration nécessaire à la configuration de SNMP sur votre nœud Linux (même community string que pour Windows.).
+
+
+> [!tip] 
+> #### Steps:
+> 
+
 
 #### **Réponse:**
 
@@ -205,6 +260,12 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 
 > 12. Montrez le résultat dans SNMPb d’une requête permettant de connaître la durée de
 fonctionnement de votre nœud Linux.
+
+
+> [!tip] 
+> #### Steps:
+> 
+
 
 #### **Réponse:**
 
@@ -219,6 +280,12 @@ fonctionnement de votre nœud Linux.
 
 > 13. Montrez la commande (par exemple via l’installation du module SNMP) utilisée depuis Windows pour récupérer le nom de votre routeur Cisco.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
 
 
@@ -229,7 +296,19 @@ fonctionnement de votre nœud Linux.
 *Intégrez le fichier MIB standard HOST-RESSOURCES-MIB à SNMPb (fourni par SNMPb) pour déterminer les OID à utiliser.*
 
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
+
+
 
 
 ## Objectif 4 : MIBs privées
@@ -240,7 +319,17 @@ Vous désirez obtenir des informations sur la mémoire flash embarquée sur votr
 > 15. Donnez la liste des fichiers MIBs que vous avez chargé et expliquez comment vous
 avez déterminé ce choix.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
 
 
 ---
@@ -248,7 +337,17 @@ avez déterminé ce choix.
 > 16. Montrez, via une requête SNMPb, le nom des 10 premiers fichiers stockés sur la
 mémoire flash de votre routeur Cisco.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
 
 
 
@@ -258,34 +357,76 @@ La version 3 de SNMP ajoute des capacités de chiffrement et d’authentificatio
 
 > 17. Montrez la configuration de votre router afin qu’il n’accepte plus que des requêtes SNMPv3 en mode authentifié et chiffré.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
+
 
 ---
 
-> 18. Montrez la configuration en mode SNMPv3 de votre application SNMPb et montrer le
-résultat d’une requête sur la valeur SysUpTime (MIB-2) en SNMPv3.
+> 18. Montrez la configuration en mode SNMPv3 de votre application SNMPb et montrer le résultat d’une requête sur la valeur SysUpTime (MIB-2) en SNMPv3.
+
+
+> [!tip] 
+> #### Steps:
+> 
 
 
 #### **Réponse:**
+
+
+
+
 
 
 ---
 
 > 19. Capturez/analysez les messages lors d’une requête SNMP v3.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
+
+
 
 ---
 
 > 20. Quelle(s) bonne(s) pratique(s) supplémentaires suggérez-vous pour sécuriser votre trafic SNMP v3 ?
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
+
 
 
 ## Objectif 6 : Utilisation de WMI
 
 Vérifiez que le service WMI est fonctionnel sur votre machine Windows.
-Pour des questions de simplification de l’infrastructure du laboratoire, la console WMI et l’agent WMI se trouvent sur la même machine. \\
+Pour des questions de simplification de l’infrastructure du laboratoire, la console WMI et l’agent WMI se trouvent sur la même machine.  
 L’accès à un agent WMI distant nécessite le réglage des autorisations, notamment au niveau DCOM.
 
 ![alt text](image-1.png)
@@ -297,7 +438,19 @@ Windows ainsi que le SID de votre utilisateur local.
 
 > 21. Montrez le résultat avec une capture d’écran.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
+
+
 
 ---
 ---
@@ -307,7 +460,18 @@ En cas d’espace insuffisant, une alarme Syslog est générée et récupérée 
 
 > 22. Montrez votre script.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
+
 
 
 ---
@@ -315,7 +479,17 @@ En cas d’espace insuffisant, une alarme Syslog est générée et récupérée 
 > 23. Montrez le résultat (valeurs obtenues et message Syslog reçu).
 
 
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
+
 
 
 ---
@@ -327,11 +501,29 @@ inséré dans votre système. Une notification est visible dans l’observateur 
 > 24. Montrez votre commande.
 
 
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
+
+
+
 
 
 ---
 
 > 25. Montrez l’événement reçu.
 
+
+> [!tip] 
+> #### Steps:
+> 
+
+
 #### **Réponse:**
+
+
