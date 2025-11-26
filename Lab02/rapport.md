@@ -326,9 +326,7 @@ ou
 ```PowerShell
 while ($true) {
     Write-Output "=== $(Get-Date) ===" >> snmp_processes.log
-    
-
-
+    snmpwalk.exe -v2c -c public localhost 1.3.6.1.2.1.25.4.2.1.2 >> snmp_processes.log
     Start-Sleep -Seconds 60
 }
 ```
@@ -339,21 +337,19 @@ while ($true) {
 
 ## Objectif 4 : MIBs privées
 
-- Afin d’interroger des objets spécifiques à votre équipement, vous avez besoin d’intégrer à votre manager SNMP (l’application SNMPb) les MIB privées nécessaires. \\
+- Afin d’interroger des objets spécifiques à votre équipement, vous avez besoin d’intégrer à votre manager SNMP (l’application SNMPb) les MIB privées nécessaires.  
 Vous désirez obtenir des informations sur la mémoire flash embarquée sur votre routeur : chargez les MIBs privées nécessaires
 
 > 15. Donnez la liste des fichiers MIBs que vous avez chargé et expliquez comment vous
 avez déterminé ce choix.
 
 
-> [!tip] 
-> #### Steps:
-> 
-
-
 #### **Réponse:**
 
-
+|Fichiers MIBs| Raisons|
+|--|--|
+|`CISCO-FLASH-MIB`|Car ça nous permet d'avoir les informations de la mémoire flash|
+|`CISCO-SMI`| Car c'est une dépendance de CISCO-FLASH-MIB|
 
 
 
@@ -366,7 +362,7 @@ mémoire flash de votre routeur Cisco.
 
 > [!tip] 
 > #### Steps:
-> 
+> faire un walk sur `ciscoFlashFileName` dans `.../private/entreprises/cisco/ciscoMgmt/ciscoFlashMIBObjects/ciscoFlashDevice/ciscoFlashPartitions/ciscoFlashFiles/ciscoFlashFileTable/ciscoFlashFileEntry/`
 
 
 #### **Réponse:**
