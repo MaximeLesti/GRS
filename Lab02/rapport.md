@@ -427,6 +427,7 @@ snmp-server host <ip windows> version 3 priv secureuser
 > 2. dans `Agent Profiles` pour `routeur_cisco_maxim` s'assurer que c'est `SNMPV3`
 > 3. dans `Agent Profiles` pour `routeur_cisco_maxim/SnmpV3` mettre secu lvl a `authPriv` 
 > 4. faire la requête sur `SysUpTime`
+>       - utilisé WS pour capturé la requête pour le point 19
 
 
 #### **Réponse:**
@@ -443,7 +444,8 @@ snmp-server host <ip windows> version 3 priv secureuser
 
 > [!tip] 
 > #### Steps:
-> 
+> faire la capture et expliqué tout précisément  
+> (explication faisable pendant DAA je pense)
 
 
 #### **Réponse:**
@@ -458,15 +460,15 @@ snmp-server host <ip windows> version 3 priv secureuser
 
 > 20. Quelle(s) bonne(s) pratique(s) supplémentaires suggérez-vous pour sécuriser votre trafic SNMP v3 ?
 
-
-> [!tip] 
-> #### Steps:
-> 
-
-
 #### **Réponse:**
 
-
+- Utiliser des mots de passe forts pour plus de sécurité.
+- Configurer le routeur pour limiter les adresses IP ayant accès à SNMP.
+- Surveiller le trafic SNMP pour détecter les activité suspecte.
+- Désactiver SNMPv1 et SNMPv2.
+- Faire une rotation periodique des mots de passe.
+- Utiliser les vues pour limiter l'accès aux objets SNMP aux strict nécessaire.
+- Utiliser un VLAN dédié pour le traffic SNMPv3.
 
 
 
@@ -490,7 +492,7 @@ Windows ainsi que le SID de votre utilisateur local.
 
 > [!tip] 
 > #### Steps:
-> 
+> ouvrir l'app apparemment déjà installé et chercher `Win32_Processor` et `Win32_UserAccount`
 
 
 #### **Réponse:**
