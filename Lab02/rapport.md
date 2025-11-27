@@ -161,7 +161,8 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 > 7. Montrez et analysez l’échange de messages capturés par Wireshark.
 
 #### **Réponse:**
-![alt text](image-25.png)
+![alt text](image-42.png)
+![alt text](image-43.png)
 
 On remarque que les demandes de paquets sont des `get-next-request`, le routeur répond avec des `get-response`. Lors du changement de nom du routeur depuis l'application SNMPb, Windows envoie un `set-request` et le routeur répond par une `get-response`basique. 
 
@@ -210,8 +211,7 @@ On remarque que les demandes de paquets sont des `get-next-request`, le routeur 
 
 #### **Réponse:**
 
-![alt text](image-27.png)
-
+![alt text](image-44.png)
 >[!warning]
 > Faire analyse
 
@@ -632,3 +632,4 @@ Register-WmiEvent -Query $query -Action {
 #### **Réponse:**
 
 
+![alt text](image-41.png)
