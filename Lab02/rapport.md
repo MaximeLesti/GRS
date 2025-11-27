@@ -481,15 +481,34 @@ snmp-server host 192.168.26.11 version 3 priv secureuser
 > 19. Capturez/analysez les messages lors d’une requête SNMP v3.
 
 
-> [!tip] 
-> #### Steps:
-> faire la capture et expliqué tout précisément  
-> (explication faisable pendant DAA je pense)
-
 
 #### **Réponse:**
 
 ![alt text](image-36.png)
+
+
+Analyse:
+- `msgVersion: snmpv3 (3)` -> Indique la version de SNMP utilisé.
+- `msgGlobalData`
+  - `msgID: 1507332` -> Identifiant unique du message SNMP.
+  - `msgMaxSize: 4096` -> Taille maximal des messages SNMP.
+  - `msgFlags: 07` -> Indique les flags de traitement des messages, ici 07 indique qu'une réponse est attendu, que le message est chiffré et qu'il est authentifié.
+  - `msgSecurityModel: USM (3)` -> Indique le modèle de sécurité utilisé ici USM (User-Based Security Model).
+- `msgAuthoritativeEngineID: 800<...>362b` -> Indique l'ID d'identification unique du moteur SNMP.
+  - `Engine ID Conformance: RFC3411 (SNMPv3)` -> Indique que l'ID est conforme à la norme RFC3411.
+  - `Engine Enterprise ID: ciscoSystems (9)` -> Indique l'identifiant de l'entreprise qui a fabriqué le produit.
+  - `Engine ID Format: MAC address (3)` -> Indique que le format de ID est une MAC.
+  - `Engine ID Data: Cisco type: Agent (0x00)` -> Indique que c'est un agent.
+  - `Engine ID Data: MAC address: <...>` -> Indique l'adresse MAC.
+- `msgAuthoritativeEngineBoots: 6` -> Indique le nombre de fois que le moteur SNMP à redémarré depuis ça configuration.
+- `msgAuthoritativeEngineTime: 1707` -> Indique le temps depuis écoulé depuis le dernier redémarrage.
+- `msgUserName: secureuser` -> Indique le nom de l'utilisateur qui a généré le message.
+- `msgAuthenticationParameters: 652<...>2f3` -> Indique les paramètres d'authentification utilisé.
+- `msgPrivacyParameters: 000<...>f08` -> Indique les paramètres utilisé pour chiffrer le message.
+- `msgData: encryptedPDU (1)` -> Indique le type de message PDU envoyé, ici chiffré. 
+  - `encyptedPDU: e233<...>2a12` -> Indique le PDU chiffré qui contient le message.
+
+
 
 ---
 
