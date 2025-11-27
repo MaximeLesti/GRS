@@ -551,13 +551,15 @@ En cas d’espace insuffisant, une alarme Syslog est générée et récupérée 
 #### **Réponse:**
 
 ```PowerShell
+Import-Module Posh-SYSLOG
 $threshold = 25
 $partitions = Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType=3"
 
 foreach ($partition in $partitions) {
-    $freePct = [math]::Round(($disk.FreeSpace / $disk.Size) * 100, 2)
-
-    Write-Host "Drive: $($disk.DeviceID)  $($freePct)% Free `n`r    Free:  $($disk.FreeSpace) `n`r    Total: $($disk.Size)"
+    if($partition.Size -gt 0){
+    $freePct = [math]::Round(($partition.FreeSpace / $partition.Size) * 100, 2)
+    
+    Write-Host "Drive: $($partition.DeviceID)  $($freePct)% Free `n`r    Free:  $($partition.FreeSpace) `n`r    Total: $($partition.Size)"
 
     if ($freePct -lt $threshold) {
         $msg = @{
@@ -565,10 +567,11 @@ foreach ($partition in $partitions) {
             Port = 514
             Facility = 16
             Severity = 4
-            Message = "Low free space on drive $($disk.DeviceID)  $freePct % left."
+            Message = "Low free space on drive $($partition.DeviceID)  $freePct % left."
         }
         Send-SyslogMessage @msg
     }
+}
 }
 ```
 
@@ -590,9 +593,12 @@ foreach ($partition in $partitions) {
 #### **Réponse:**
 
 
+![alt text](image-39.png)
 
+Pour obtenir uns sortie syslog, nous avons modifié le threshold, pour une valeur de 
+80%.
 
-
+![alt text](image-40.png)
 
 
 ---
