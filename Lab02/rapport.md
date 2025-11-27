@@ -452,15 +452,13 @@ Windows ainsi que le SID de votre utilisateur local.
 > 21. Montrez le résultat avec une capture d’écran.
 
 
-> [!tip] 
-> #### Steps:
-> ouvrir l'app apparemment déjà installé et chercher les classes `Win32_Processor` et `Win32_UserAccount` pour user account choisir l'instance avec `Name="GRS"`
-
-
 #### **Réponse:**
 
+Les caractéristiques processeur:
 
 ![alt text](image-q21.png)
+
+Le SID de l'utilisateur local:
 
 ![alt text](image-q21-2.png)
 
@@ -473,12 +471,6 @@ En cas d’espace insuffisant, une alarme Syslog est générée et récupérée 
 
 ---
 > 22. Montrez votre script.
-
-
-> [!tip] 
-> #### Steps:
-> tester si ça marche  
-> possiblement besoin de Posh-SYSLOG  
 
 
 #### **Réponse:**
@@ -517,19 +509,12 @@ foreach ($partition in $partitions) {
 > 23. Montrez le résultat (valeurs obtenues et message Syslog reçu).
 
 
-> [!tip] 
-> #### Steps:
-> screenshot l'output du script  
-> si trop d'espace libre changer le threshold pour générer le syslog
-
-
 #### **Réponse:**
 
 
 ![alt text](image-39.png)
 
-Pour obtenir uns sortie syslog, nous avons modifié le threshold, pour une valeur de 
-80%.
+Pour obtenir une sortie syslog, nous avons temporairement modifié le threshold, pour une valeur de 80%.
 
 ![alt text](image-40.png)
 
@@ -542,11 +527,6 @@ inséré dans votre système. Une notification est visible dans l’observateur 
 
 ---
 > 24. Montrez votre commande.
-
-
-> [!tip] 
-> #### Steps:
-> tester si ça marche
 
 
 #### **Réponse:**
@@ -565,11 +545,6 @@ Register-WmiEvent -Query $query -Action {
 ---
 
 > 25. Montrez l’événement reçu.
-
-
-> [!tip] 
-> #### Steps:
-> screenshot l'event dans l'event logger de windows
 
 
 #### **Réponse:**
