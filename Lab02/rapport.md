@@ -77,7 +77,7 @@ snmp-server enable traps snmp authentication
 
 ![alt text](image-12.png)
 
-Nous nous sommes qu'il y avait une typo lors de la capture d'écran pour ciscoRO, nous l'avons donc refaite correctement ensuite.
+Nous nous sommes rendu compte qu'il y avait une typo lors de la capture d'écran pour ciscoRO, nous l'avons donc refaite correctement ensuite.
 
 ---
 
@@ -86,6 +86,7 @@ Nous nous sommes qu'il y avait une typo lors de la capture d'écran pour ciscoRO
 #### **Réponse:**
 
 <u>SysDescr</u>
+
 ![alt text](image-13.png)
 
 ![alt text](image-14.png)
