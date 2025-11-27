@@ -242,7 +242,7 @@ La communauté SNMP utilisée est ciscoRO
 Configuration:
 ```{bash}
 conf t
-access-list 10 permit <ip du windows>
+access-list 10 permit 192.168.26.11
 access-list 10 deny any
 snmp-server community ciscoRO RO 10
 snmp-server community ciscoRW RW 10
