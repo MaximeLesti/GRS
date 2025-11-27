@@ -154,12 +154,6 @@ Il manque la racine complète (1.3.6.1.4.1) et le fichier MiB du constructeur (C
 
 - Changez le nom (hostname) du routeur à l’aide de l’application SNMPb (nouveau nom : `router-<votre-nom>`) tout en capturant avec Wireshark les messages échangés.
 
-> [!tip] 
-> #### Steps:
-> 1. Depuis SNMPb faire `Set sysName` avec `router-<votre-nom>`
-> 2. Avec Wireshark capturer `SNMP set-request` et `SNMP get-response`
-> 3. Add explication 
-
 ---
 > 7. Montrez et analysez l’échange de messages capturés par Wireshark.
 
@@ -194,26 +188,34 @@ Il manque la racine complète (1.3.6.1.4.1) et le fichier MiB du constructeur (C
 
 - Générez une trap SNMP en déclenchant un événement sur votre routeur (un peu d’imagination...) tout en capturant avec Wireshark les messages échangés.
 
-
-> [!tip] 
-> #### Steps:
-> 1. Sur le routeur: la cmd `test snmp trap ?` permet lister les tests qui existe
-> 2. En choisir un exemple: `test snmp trap entity`
-> 3. Faire capture avec Wireshark (UDP 162, snmpv2-trap)
-> - Pour 8.
->   1. Dans SNMPb aller dans Traps et trouver celle qui vient d'être intercepté
-> - Pour 9.
->   1. Mettre capture écran WS
->   2. Ajouter explication avec lien donné
-
 ---
 > 8. Montrez les messages (traps) reçus par l’application SNMPb.
 
 #### **Réponse:**
 ![alt text](image-26.png)
 
->[!warning]
-> Faire analyse
+On retrouve sur cette image:
+- le numéro de la trap : 0003
+- la date : 2025-11-26
+- l'heure à laquelle la trap a été effectuée: 17:13:57
+- le timestamp: temps interne de l'équipement
+- le Notification type: Type de trap, ici linkUp
+- le Message Type: ici une Trap(v2)
+- la version du protocole SNMP: SNMPv2c
+- l'agent address, soit l'IP de l'équipement qui envooie les traps, ici 192.168.26.13 (routeur cisco)
+- l'agent port: porte source utilisé par l'agent, ici 50867.
+
+Le trap linkUp indique que l’équipement SNMP (agissant comme agent) signale qu’une de ses interfaces réseau est passée de down à up (c’est-à-dire, qu’un lien réseau a été activé).
+
+On observe 3 variables (bindings) accompagnant le trap :
+
+ifIndex : 1, qui identifie l’interface réseau concernée. Elle porte l’index 1.
+
+ifDescr : GigabitEthernet1, soit le nom de l’interface : GigabitEthernet1
+
+ifType : 6, soit le type d’interface selon l’IF-MIB. 6 indique ethernetCsmacd, soit "Interface Ethernet classique."
+
+La communauté SNMP utilisée est ciscoRO
 
 ---
 
@@ -223,10 +225,17 @@ Il manque la racine complète (1.3.6.1.4.1) et le fichier MiB du constructeur (C
 *(compte Cisco à créer si nécessaire)*
 
 #### **Réponse:**
-
 ![alt text](image-44.png)
->[!warning]
-> Faire analyse
+| Variable                  | OID                           | Valeur                                            | Signification                                                                            |
+| ------------------------- | ----------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **sysUpTime**             | 1.3.6.1.2.1.1.3.0             | 715886                                            | Temps écoulé depuis le dernier redémarrage de l’équipement (en centièmes de seconde).    |
+| **snmpTrapOID**           | 1.3.6.1.6.3.1.1.4.1.0         | 1.3.6.1.4.1.9.9.41.2.0.1                          | Identifie le trap spécifique ; ici, un événement Cisco de type LINK (trouble interface). |
+| **ciscoNotificationType** | 1.3.6.1.4.1.9.9.41.2.3.1.2.89 | "LINK"                                            | Type d’événement : modification de l’état d’une interface.                               |
+| **ciscoEventIndex**       | 1.3.6.1.4.1.9.9.41.2.3.1.3.89 | 4                                                 | Identifiant interne de l’événement pour l’équipement Cisco.                              |
+| **ciscoEventSeverity**    | 1.3.6.1.4.1.9.9.41.2.3.1.4.89 | "UPDOWN"                                          | Gravité : changement d’état (up/down) d’une interface.                                   |
+| **ciscoEventDescription** | 1.3.6.1.4.1.9.9.41.2.3.1.5.89 | "Interface GigabitEthernet1, changed state to up" | Description textuelle de l’événement — interface redevenue UP.                           |
+| **ciscoEventTime**        | 1.3.6.1.4.1.9.9.41.2.3.1.6.89 | 715885                                            | Horodatage du moment exact de l’événement (proche de `sysUpTime`).                       |
+
 
 ---
 
