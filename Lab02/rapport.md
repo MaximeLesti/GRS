@@ -8,9 +8,6 @@
 ---
 > 1. Montrez à l’aide de captures d’écran les changements de configuration que vous avez réalisés
 
-> [!warning]
-> Il faudrait pas mettre `povenant de ces hôtes` avec juste `localhost` dedans ?
-
 
 #### **Réponse:**
 
@@ -67,22 +64,20 @@ SNMPv2 (choisissez ciscoRO comme community string read only et ciscoRW
 comme community string read write).
 Configurez également le routeur pour qu’il envoie ses traps snmp au manager SNMPb sur Windows. Prévoyez la synchro temps et l’affichage des événements en ms.
 
-A faire:
+#### **Réponse:**
+
 ```
+enable
+conf t 
 snpm-server community ciscoRO ro
-snmp-server comminity ciscoRW rw
+snmp-server community ciscoRW rw
 snmp-server enable traps
 snmp-server enable traps snmp authentication
 ```
 
-> [!warning]
-> je crois qu'il manque des bouts,
-> genre `srv host <ip> ...`
-
-
-#### **Réponse:**
 ![alt text](image-12.png)
 
+Nous nous sommes qu'il y avait une typo lors de la capture d'écran pour ciscoRO, nous l'avons donc refaite correctement ensuite.
 
 ---
 
@@ -380,7 +375,6 @@ snmp-server host 192.168.26.11 version 3 priv secureuser
 ![alt text](image-34.png)
 
 ![alt text](image-35.png)
-
 
 
 ---
