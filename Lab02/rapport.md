@@ -165,12 +165,30 @@ Il manque la racine complète (1.3.6.1.4.1) et le fichier MiB du constructeur (C
 
 #### **Réponse:**
 ![alt text](image-42.png)
+1. version: version numéro 1 du protocole SNMP
+2. Community: ciscoRW: Community string utilisé pour l'authentification (RW)
+3. Data: Payload du message SNMP
+   1. Set-request: type du message SNMP: ici, on veut définir la valeur d'une variable
+   2. Request-ID: identficateur unique de la requête SNMP.
+   3. error-status: noError (0), signifie qu'il n'y a pas eu d'erreur lors du traitement de la demande. 
+   4. error-index: index indiquant quelle variable a provoqué une erreur lors du traitement de la demande. 0 ici, indique qu'il n'y a pas eu d'erreur.
+   5. variable-bindings: liste de paire OID-valeur. Ici, une seule paire.
+      1. OID: 1.3.6.1.2.1.1.5.0 (iso 3.6.1.2.1.1.5.0) correspond à notre hostname
+      2. Value (OctetString): Valeur que l'on souhaite attribuer. Ici "routeur-maxime" est le nouveau nom.
+
 ![alt text](image-43.png)
-
-On remarque que les demandes de paquets sont des `get-next-request`, le routeur répond avec des `get-response`. Lors du changement de nom du routeur depuis l'application SNMPb, Windows envoie un `set-request` et le routeur répond par une `get-response`basique. 
-
->[!warning]
->TO COMPLETE
+1. version: version numéro 1 du protocole SNMP
+2. Community: ciscoRW: Community string utilisé pour l'authentification (RW)
+3. Data: Payload du message SNMP
+   1. Get-request: type du message SNMP: ici, on veut récupérer/donner la valeur d'une variable
+   2. Request-ID: identificateur unique de la requête SNMP.
+   3. error-status: noError (0), signifie qu'il n'y a pas eu d'erreur lors du traitement de la demande. 
+   4. error-index: index indiquant quelle variable a provoqué une erreur lors du traitement de la demande. 0 ici, indique qu'il n'y a pas eu d'erreur.
+   5. variable-bindings: liste de paire OID-valeur. Ici, une seule paire.
+      1. OID: 1.3.6.1.2.1.1.5.0 (iso 3.6.1.2.1.1.5.0) correspond à notre hostname
+      2. Value (OctetString): Valeur de la réponse
+   
+   La requête Set portait sur la modification du nom du système, et la réponse renvoie la valeur "routeur-maxime". Cela indique que l’agent SNMP du périphérique a bien pris en compte la demande et renvoie désormais le nom du système mis à jour.
 
 --- 
 
