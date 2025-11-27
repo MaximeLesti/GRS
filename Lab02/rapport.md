@@ -241,40 +241,24 @@ La communauté SNMP utilisée est ciscoRO
 
 > 10. Montrez la configuration de votre routeur afin qu’il n’accepte des requêtes SNMP que de la part de votre machine Windows uniquement.
 
-> [!tip] 
-> #### Steps:
-> (Faudra sûrement mettre dans la résponse les cmd suivantes)
-> 1. Config des `acces-list`
->    ```
->    conf t
->    access-list 10 permit <ip du windows>
->    access-list 10 deny any
->    snmp-server community ciscoRO RO 10
->    snmp-server community ciscoRW RW 10
->    exit
->    copy run start
->    ```
-> 2. Vérifier  
->    `show access-lists`   
->    `show snmp`  
->    j'ai aussi trouvé ces cmd mais je sais pas trop la quelle est meilleur (j'aurais envie de dire la 1ère)
-
 #### **Réponse:**
+
+Configuration:
+```{bash}
+conf t
+access-list 10 permit <ip du windows>
+access-list 10 deny any
+snmp-server community ciscoRO RO 10
+snmp-server community ciscoRW RW 10
+exit
+copy run start
+```
 
 ![alt text](image-28.png)
 
 
 ---
 - Afin d’intégrer votre nœud linux à votre environnement de gestion, activez et configurez SNMP sur votre nœud Linux.
-
-
-> [!tip] 
-> #### Steps:
-> 1. installer SNMPd
-> 2. éditer `/etc/snmp/snmpd.conf`
-> 3. ajouter addr ip de l'interface dans `agentaddress` comme `agentaddress udp:161`
-> 4. ajouter une `rocommunity` comme `rocommunity heig <addr win> -V systemonly`
-> 5. restart `sudo systemctl restart snmpd`
 
 ---
 > 11. Montrez le(s) fichier(s) de configuration nécessaire à la configuration de SNMP sur votre nœud Linux (même community string que pour Windows.).
@@ -283,27 +267,14 @@ La communauté SNMP utilisée est ciscoRO
 
 ![alt text](image-29.png)
 
-> [!tip] 
-> #### Steps:
-> screenshot `/etc/snmp/snmpd.conf`
-
-
 ---
 
 > 12. Montrez le résultat dans SNMPb d’une requête permettant de connaître la durée de
 fonctionnement de votre nœud Linux.
 
-
-> [!tip] 
-> #### Steps:
-> trouver dans SNMPb `sysUpTime` normalement dans `internet/mgmt/mib-2/system/` et mettre screnshot
-
-
 #### **Réponse:**
 
 ![alt text](image-30.png)
-
-
 
 ---
 
@@ -311,26 +282,6 @@ fonctionnement de votre nœud Linux.
 
 ---
 > 13. Montrez la commande (par exemple via l’installation du module SNMP) utilisée depuis Windows pour récupérer le nom de votre routeur Cisco.
-
-
-> [!tip] 
-> #### Steps:
-> ```sh
-> # Install
-> Install-Module -Name SNMP
-> 
-> # Get cmd
-> SnmpGet.exe -v:2c -c:"ciscoRO" <ip Cisco> 1.3.6.1.2.1.1.5.0
-> ```
-
-```{bash}
-#CUISINELLA
-$SNMP = New-Object -comObject olePrn.OleSNMP
-$SNMP.open('192.168.26.13',ciscoRO',2,1000)
-$Result = $SNMP.get('.1.3.6.1.2.1.1.5.0')
-$SNMP.Close()
-Write-Output "Device name: $Result"
-```
 
 #### **Réponse:**
 
@@ -347,11 +298,6 @@ Write-Output "Device name: $($SNMP.open('192.168.26.13','ciscoRO',2,1000) | Out-
 
 
 
-> [!warning] 
-> vérifier  
-> pas sur si correcte 
-
-
 #### **Réponse:**
 
 ```PowerShell
@@ -360,14 +306,7 @@ while ($true) {
     Start-Sleep -Seconds 60
 }
 ```
-<!--ou 
-```PowerShell
-while ($true) {
-    Write-Output "=== $(Get-Date) ===" >> snmp_processes.log
-    snmpwalk.exe -v2c -c public localhost 1.3.6.1.2.1.25.4.2.1.2 >> snmp_processes.log
-    Start-Sleep -Seconds 60
-}
-```-->
+
 ---
 
 
@@ -390,17 +329,9 @@ avez déterminé ce choix.
 |`CISCO-FLASH-MIB`|Cela nous permet d'avoir les informations de la mémoire flash|
 |`CISCO-SMI`| C'est une dépendance de CISCO-FLASH-MIB|
 
-
-
 ---
 
 > 16. Montrez, via une requête SNMPb, le nom des 10 premiers fichiers stockés sur la mémoire flash de votre routeur Cisco.
-
-
-> [!tip] 
-> #### Steps:
-> faire un walk sur `ciscoFlashFileName` dans `.../private/entreprises/cisco/ciscoMgmt/ciscoFlashMIBObjects/ciscoFlashDevice/ciscoFlashPartitions/ciscoFlashFiles/ciscoFlashFileTable/ciscoFlashFileEntry/`
-
 
 #### **Réponse:**
 
@@ -417,16 +348,6 @@ La version 3 de SNMP ajoute des capacités de chiffrement et d’authentificatio
 
 ---
 > 17. Montrez la configuration de votre router afin qu’il n’accepte plus que des requêtes SNMPv3 en mode authentifié et chiffré.
-
-
-> [!tip] 
-> #### Steps:
-> lire la réponse (et ajouter un screen de `show run`) pas sur si utile le screen
-
-> [!warning] 
-> remplacer `<ip windows>` par la vrai ip dans la réponse si dessous
-
-
 
 
 #### **Réponse:**
@@ -446,25 +367,11 @@ snmp-server user secureuser SECURE-GROUP v3 auth sha pass1 priv aes 128 pass2
 snmp-server host 192.168.26.11 version 3 priv secureuser
 ```
 
+(pas de screen du fichier de configuration, car les données liées sont trop éloignées les unes des autres)
+
 ---
 
 > 18. Montrez la configuration en mode SNMPv3 de votre application SNMPb et montrer le résultat d’une requête sur la valeur SysUpTime (MIB-2) en SNMPv3.
-
-
-> [!tip] 
-> #### Steps:
-> Faire un screen pour chaque step ou mettre une explication complete
-> 1. dans SNMPb ouvrir `USM Profiles` et mettre les credentials 
->       - Secu User Name: `secureuser`
->       - Auth protocol: `SHA`
->       - Auth pass: `pass1`
->       - Privacy Protcol: `AES 128`
->       - Privacy pass: `pass2`
-> 2. dans `Agent Profiles` pour `routeur_cisco_maxim` s'assurer que c'est `SNMPV3`
-> 3. dans `Agent Profiles` pour `routeur_cisco_maxim/SnmpV3` mettre secu lvl a `authPriv` 
-> 4. faire la requête sur `SysUpTime`
->       - utilisé WS pour capturé la requête pour le point 19
-
 
 #### **Réponse:**
 
