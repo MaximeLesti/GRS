@@ -424,9 +424,6 @@ snmp-server user secureuser SECURE-GROUP v3 auth sha pass1 priv aes 128 pass2
 snmp-server host 192.168.26.11 version 3 priv secureuser
 ```
 
-snmp-server group SECURE-GROUP v3 priv
-snmp-server user secureuser SECURE-GROUP v3 auth sha pass1 priv aes 128 pass2
-snmp-server host 192.168.26.11 version 3 priv secureuser
 
 
 
@@ -521,16 +518,10 @@ Windows ainsi que le SID de votre utilisateur local.
 
 #### **Réponse:**
 
-![alt text](image-37.png)
 
-![alt text](image-38.png)
+![alt text](image-q21.png)
 
-> [!warning] 
-> A VERIFIER
-
-
-
-
+![alt text](image-q21-2.png)
 
 
 ---
