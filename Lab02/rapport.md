@@ -5,6 +5,7 @@
 
 
 - Activez l’agent SNMP sur la machine Windows 10. Le paramétrage s’effectue au niveau du service correspondant. Définissez le community string en mode RO avec la valeur choisie à l’objectif 2 (par exemple heig).
+---
 > 1. Montrez à l’aide de captures d’écran les changements de configuration que vous avez réalisés
 
 > [!warning]
@@ -16,9 +17,9 @@
 ![Changements SNMP config](image.png)
 
 ---
----
 
 - A l’aide du browser SNMPb, interrogez le localhost.
+---
 > 2. Montrez les valeurs retournées par les 5 objets SysDescr, SysName, SysUpTime,
 ifNumber, et l’adresse IP de votre cible. \
 Vérifiez si les données retournées via SNMP correspondent à la réalité du système cible (Windows).
@@ -58,9 +59,8 @@ Vérifiez si les données retournées via SNMP correspondent à la réalité du 
 ![alt text](image-11.png)
 
 ---
---- 
-
 - Activer et configurez l’agent SNMP sur le routeur Cisco 
+---
 
 > 3. Montrez la configuration du routeur cisco de manière à ce qu’il puisse être géré via
 SNMPv2 (choisissez ciscoRO comme community string read only et ciscoRW
@@ -147,7 +147,6 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 ![alt text](image-24.png)
 
 ---
----
 
 - Changez le nom (hostname) du routeur à l’aide de l’application SNMPb (nouveau nom : `router-<votre-nom>`) tout en capturant avec Wireshark les messages échangés.
 
@@ -157,7 +156,7 @@ La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle
 > 2. Avec Wireshark capturer `SNMP set-request` et `SNMP get-response`
 > 3. Add explication 
 
-
+---
 > 7. Montrez et analysez l’échange de messages capturés par Wireshark.
 
 #### **Réponse:**
@@ -169,14 +168,6 @@ On remarque que les demandes de paquets sont des `get-next-request`, le routeur 
 >[!warning]
 >TO COMPLETE
 
-
-
-
-
-
-
-
----
 --- 
 
 - Générez une trap SNMP en déclenchant un événement sur votre routeur (un peu d’imagination...) tout en capturant avec Wireshark les messages échangés.
@@ -193,7 +184,7 @@ On remarque que les demandes de paquets sont des `get-next-request`, le routeur 
 >   1. Mettre capture écran WS
 >   2. Ajouter explication avec lien donné
 
-
+---
 > 8. Montrez les messages (traps) reçus par l’application SNMPb.
 
 #### **Réponse:**
@@ -243,8 +234,6 @@ On remarque que les demandes de paquets sont des `get-next-request`, le routeur 
 
 
 ---
----
-
 - Afin d’intégrer votre nœud linux à votre environnement de gestion, activez et configurez SNMP sur votre nœud Linux.
 
 
@@ -256,7 +245,7 @@ On remarque que les demandes de paquets sont des `get-next-request`, le routeur 
 > 4. ajouter une `rocommunity` comme `rocommunity heig <addr win> -V systemonly`
 > 5. restart `sudo systemctl restart snmpd`
 
-
+---
 > 11. Montrez le(s) fichier(s) de configuration nécessaire à la configuration de SNMP sur votre nœud Linux (même community string que pour Windows.).
 
 #### **Réponse:**
@@ -285,12 +274,11 @@ fonctionnement de votre nœud Linux.
 
 
 
-
----
 ---
 
 - Windows Powershell permet de créer des scripts, utiles pour récupérer des informations de manière régulière et automatisée par exemple.
 
+---
 > 13. Montrez la commande (par exemple via l’installation du module SNMP) utilisée depuis Windows pour récupérer le nom de votre routeur Cisco.
 
 
@@ -349,7 +337,7 @@ while ($true) {
     Start-Sleep -Seconds 60
 }
 ```-->
-
+---
 
 
 
@@ -359,6 +347,7 @@ while ($true) {
 - Afin d’interroger des objets spécifiques à votre équipement, vous avez besoin d’intégrer à votre manager SNMP (l’application SNMPb) les MIB privées nécessaires.  
 Vous désirez obtenir des informations sur la mémoire flash embarquée sur votre routeur : chargez les MIBs privées nécessaires
 
+---
 > 15. Donnez la liste des fichiers MIBs que vous avez chargé et expliquez comment vous
 avez déterminé ce choix.
 
@@ -388,12 +377,14 @@ avez déterminé ce choix.
 Les 10 premiers fichiers sont donc:
 ![alt text](image-32.png)
 
+---
 
 
 ## Objectif 5 : Configurer les agents SNMP en mode v3
 
 La version 3 de SNMP ajoute des capacités de chiffrement et d’authentification « forte ».
 
+---
 > 17. Montrez la configuration de votre router afin qu’il n’accepte plus que des requêtes SNMPv3 en mode authentifié et chiffré.
 
 
@@ -423,10 +414,6 @@ snmp-server group SECURE-GROUP v3 priv
 snmp-server user secureuser SECURE-GROUP v3 auth sha pass1 priv aes 128 pass2
 snmp-server host 192.168.26.11 version 3 priv secureuser
 ```
-
-
-
-
 
 ---
 
@@ -473,10 +460,6 @@ snmp-server host 192.168.26.11 version 3 priv secureuser
 
 ![alt text](image-36.png)
 
-
-
-
-
 ---
 
 > 20. Quelle(s) bonne(s) pratique(s) supplémentaires suggérez-vous pour sécuriser votre trafic SNMP v3 ?
@@ -491,7 +474,7 @@ snmp-server host 192.168.26.11 version 3 priv secureuser
 - Utiliser les vues pour limiter l'accès aux objets SNMP aux strict nécessaire.
 - Utiliser un VLAN dédié pour le traffic SNMPv3.
 
-
+---
 
 
 
@@ -507,6 +490,7 @@ L’accès à un agent WMI distant nécessite le réglage des autorisations, not
 - A l’aide de WMI explorer, retrouver les caractéristiques du processeur de votre VM
 Windows ainsi que le SID de votre utilisateur local.
 
+---
 
 > 21. Montrez le résultat avec une capture d’écran.
 
@@ -525,11 +509,12 @@ Windows ainsi que le SID de votre utilisateur local.
 
 
 ---
----
+
 
 - Ecrivez un script PowerShell permettant de lister, à l’aide de WMI, les partitions de la VM Windows avec leur lettre de lecteur et de retourner le pourcentage d’espace vide.
 En cas d’espace insuffisant, une alarme Syslog est générée et récupérée sur votre serveur Syslog.
 
+---
 > 22. Montrez votre script.
 
 
@@ -593,11 +578,12 @@ Pour obtenir uns sortie syslog, nous avons modifié le threshold, pour une valeu
 
 
 ---
----
+
 
 - Etablissez une souscription permanente à un événement lorsqu’un périphérique USB est
 inséré dans votre système. Une notification est visible dans l’observateur d’événements. 
 
+---
 > 24. Montrez votre commande.
 
 
@@ -633,3 +619,5 @@ Register-WmiEvent -Query $query -Action {
 
 
 ![alt text](image-41.png)
+
+---
