@@ -261,6 +261,8 @@ copy run start
 
 #### **Réponse:**
 
+Fichier de configuration `/etc/snmp/snmpd.conf`:
+
 ![alt text](image-29.png)
 
 ---
