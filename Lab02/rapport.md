@@ -548,21 +548,21 @@ $partitions = Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType=3"
 
 foreach ($partition in $partitions) {
     if($partition.Size -gt 0){
-    $freePct = [math]::Round(($partition.FreeSpace / $partition.Size) * 100, 2)
+        $freePct = [math]::Round(($partition.FreeSpace / $partition.Size) * 100, 2)
     
-    Write-Host "Drive: $($partition.DeviceID)  $($freePct)% Free `n`r    Free:  $($partition.FreeSpace) `n`r    Total: $($partition.Size)"
+        Write-Host "Drive: $($partition.DeviceID)  $($freePct)% Free `n`r    Free:  $($partition.FreeSpace) `n`r    Total: $($partition.Size)"
 
-    if ($freePct -lt $threshold) {
-        $msg = @{
-            Server = "127.0.0.1"
-            Port = 514
-            Facility = 16
-            Severity = 4
-            Message = "Low free space on drive $($partition.DeviceID)  $freePct % left."
+        if ($freePct -lt $threshold) {
+            $msg = @{
+                Server = "127.0.0.1"
+                Port = 514
+                Facility = 16
+                Severity = 4
+                Message = "Low free space on drive $($partition.DeviceID)  $freePct % left."
+            }
+            Send-SyslogMessage @msg
         }
-        Send-SyslogMessage @msg
     }
-}
 }
 ```
 
