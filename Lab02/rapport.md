@@ -123,28 +123,32 @@ snmp-server enable traps snmp authentication
 
 > 5. A quoi sert/correspond la valeur retournée par sysObjectID ? Que vous manque-t-il pour l’interpréter correctement ?
 
-
-> [!warning]
-> a completer
-
 #### **Réponse:**
 
-La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle de l'équipement. Il manque la racine complète (1.3.6.1.4.1) et le fichier MiB du constructeur.
+La valeur renvoie une partie de l'OID, identifiant le constructeur et le modèle de l'équipement. Les gestionnaires SNMP utilisent le sysObjectID pour identifier le type d’équipement ainsi que ses capacités. Cette valeur peut ensuite être associée aux informations d’un module MIB afin d’obtenir des détails précis sur l’appareil, comme sa version matérielle ou logicielle.
+
+Il manque la racine complète (1.3.6.1.4.1) et le fichier MiB du constructeur (CISCO-PRODUCT-MIB).
+
+
 
 ---
 
-> 6. A l’aide de Wireshark, capturez et présentez de manière lisible les trames lorsque la machine Windows 10 interroge le routeur Cisco pour obtenir le nom de l’équipement
-(les champs concernant SNMP doivent être visibles et commentés).
-
-
-> [!warning]
-> ajouter commentaire  
-> faut 2 img: request, response
+> 6. A l’aide de Wireshark, capturez et présentez de manière lisible les trames lorsque la machine Windows 10 interroge le routeur Cisco pour obtenir le nom de l’équipement (les champs concernant SNMP doivent être visibles et commentés).
 
 
 #### **Réponse:**
 
 ![alt text](image-24.png)
+
+1. Version: version numéro 1 de SNMP
+2. Community: Community string utilisé pour l'authentification, afin d'accéder à l'appareil.
+3. data: get-next-request: Message utilisé pour avoir la valeur d'un OID.
+   1. request-id: ID de demande défini, identificateur unique utilisé pour faire correspondre la demande avec la réponse correspondante.
+   2. error-status: noError indique qu'aucune erreur ne s'est produite lors de la demande SNMP
+   3. error-index: valeur à 0, indique qu'aucune erreur n'a été commise avec l'OID de la demande
+4. variable-binding: Liste de paires OID-valeur, spécifiant les objets sur lesquels porte la demande (ici un seul objet)
+   1. OID: 1.3.6.1.2.1.1.5 (iso.3.6.1.2.1.1.5) ->objet de description du système
+   2. Value Null: indique que la valeur de l'objet est demandé mais pas définie.
 
 ---
 
